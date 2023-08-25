@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+      /* Reset default margins and paddings */
+body, h1, p, div {
+    margin: 0;
+    padding: 0;
+}
+
+/* Basic styling for the quiz container */
+.quiz-container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for the quiz title */
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Style for the question container */
+.question-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Style for quiz question text */
+#question-text {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+/* Style for quiz options */
+.option {
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.option:hover {
+    background-color: #e0e0e0;
+}
+
+/* Style for attempt status */
+#attempt-status {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Style for buttons */
+#submit-button, #reload-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#submit-button:hover, #reload-button:hover {
+    background-color: #0056b3;
+}
+
+/* Style for reload button */
+#reload-button {
+    display: none;
+    margin-top: 20px;
+    background-color: #28a745;
+    
+}
+
+#reload-button:hover {
+    background-color: #1d923d;
+}
+
+    </style>
+
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz App</h1>
+        <div class="question-container">
+            <p id="question-text">Question goes here...</p>
+            <div class="options" id="options-container">
+                <!-- Options will be inserted here dynamically -->
+            </div>
+        </div>
+        <p id="attempt-status">Question X of Y</p>
+        <button id="submit-button">Next Question</button>
+        <button id="reload-button">Quiz Reload</button>
+    </div>
+    <script>
+const questionText = document.getElementById('question-text');
+const optionsContainer = document.getElementById('options-container');
+const attemptStatus = document.getElementById('attempt-status');
+const submitButton = document.getElementById('submit-button');
+const reloadButton = document.getElementById('reload-button');
+
+const quizData = [
+    {
+        question: "What is the capital of France?",
+        options: ["Paris", "London", "Berlin", "Madrid"],
+        correctOption: 0
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Mars", "Venus", "Jupiter", "Saturn"],
+        correctOption: 0
+    },
+    {
+        question: "What is the largest mammal?",
+        options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
+        correctOption: 1
+    },
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+
+function loadQuestion() {
+    if (currentQuestionIndex < quizData.length) {
+        const currentQuestion = quizData[currentQuestionIndex];
+        questionText.textContent = currentQuestion.question;
+        optionsContainer.innerHTML = '';
+
+        currentQuestion.options.forEach((option, index) => {
+            const optionElement = document.createElement('div');
+            optionElement.classList.add('option');
+            optionElement.textContent = option;
+            optionElement.addEventListener('click', () => handleOptionClick(index));
+            optionsContainer.appendChild(optionElement);
+        });
+
+        attemptStatus.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
+        submitButton.textContent = "Next Question";
+    } else {
+        finishQuiz();
+    }
+}
+
+function handleOptionClick(selectedIndex) {
+    const currentQuestion = quizData[currentQuestionIndex];
+    if (selectedIndex === currentQuestion.correctOption) {
+        score++;
+    }
+    currentQuestionIndex++;
+
+    loadQuestion();
+}
+
+function finishQuiz() {
+    questionText.textContent = `Quiz completed! Your score: ${score} out of ${quizData.length}`;
+    optionsContainer.innerHTML = '';
+    attemptStatus.textContent = '';
+    submitButton.style.display = 'none';
+    reloadButton.style.display = 'block';
+}
+
+reloadButton.addEventListener('click', () => window.location.reload());
+
+loadQuestion();
+
+    </script>
+
+</body>
+</html>
