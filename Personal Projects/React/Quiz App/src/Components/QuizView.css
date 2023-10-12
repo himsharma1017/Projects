@@ -1,0 +1,25 @@
+.question{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.question-number{
+    font-weight: 1000;
+    font-size: 16px;
+}
+
+.question-text{
+    font-size: 28px;
+    font-weight: lighter;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.answer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 20px;
+    width: 70%;
+}
